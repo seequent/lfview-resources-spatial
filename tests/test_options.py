@@ -97,6 +97,7 @@ def test_good_optionsitems(options_class, value, data, mapping):
 )
 def test_bad_optionsitems(options_class, prop, bad_val):
     opt = options_class(
+        value=properties.undefined,
         data='https://example.com/api/data/basic/abc123',
         mapping='https://example.com/api/mappings/continuous/def456',
     )
