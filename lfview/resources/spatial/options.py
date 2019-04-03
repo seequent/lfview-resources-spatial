@@ -126,6 +126,7 @@ class OptionsSize(OptionsOpacity):
     value = properties.Float(
         'Single size value, only used if data is unspecified',
         min=0.0,
+        default=10,
         required=False,
     )
 
@@ -239,6 +240,12 @@ class OptionsBlockModel(_BaseElementOptions):
         'Default wireframe options on the element',
         OptionsWireframe,
         default=OptionsWireframe,
+    )
+    textures = properties.List(
+        'Provided for backwards compatibility',
+        OptionsTexture,
+        required=False,
+        max_length=0,
     )
 
 
