@@ -68,7 +68,7 @@ elif [ $PATCH -gt $PREVIOUS_PATCH ]; then
     finish 0
 elif [ "$PATCH" -lt $PREVIOUS_PATCH ]; then
     finish 1
-elif [ $BETA -a $PREVIOUS_BETA -a $BETA -gt $ $PREVIOUS_BETA ]; then
+elif [ $BETA -a $PREVIOUS_BETA -a $BETA -gt $PREVIOUS_BETA ]; then
     finish 0
 elif [ ! $BETA -a $PREVIOUS_BETA ]; then
     finish 0
