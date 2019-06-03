@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 # checkversion.sh
 # Copyright 2019 Seequent
