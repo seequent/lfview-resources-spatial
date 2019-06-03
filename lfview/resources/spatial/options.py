@@ -193,6 +193,17 @@ class _BaseElementOptions(_BaseOptions):
 class OptionsPoints(_BaseElementOptions):
     """PointSet visualization options"""
 
+    size = properties.Instance(
+        'Default point size on the element',
+        OptionsSize,
+        default=OptionsSize,
+    )
+    pixelated = properties.Boolean(
+        'Points are displayed as squares or glyphs',
+        default=True,
+        required=False,
+    )
+
 
 class OptionsLines(_BaseElementOptions):
     """LineSet visualization options
@@ -209,7 +220,7 @@ class OptionsTubes(OptionsLines):
     and may be used with drillholes, for example.
     """
     radius = properties.Instance(
-        'Default opacity options on the element',
+        'Default radius options on the element',
         OptionsSize,
         default=OptionsSize,
     )
