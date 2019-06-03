@@ -198,9 +198,10 @@ class OptionsPoints(_BaseElementOptions):
         OptionsSize,
         default=OptionsSize,
     )
-    pixelated = properties.Boolean(
-        'Points are displayed as squares or glyphs',
-        default=True,
+    style = properties.StringChoice(
+        'Points are displayed as pixels or spheres',
+        default='Pixelated',
+        choices=['Pixelated', 'Sphere'],
         required=False,
     )
 
