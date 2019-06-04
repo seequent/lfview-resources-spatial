@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 # checkversion.sh
 # Copyright 2019 Seequent
@@ -56,7 +56,7 @@ PREVIOUS_PATCH_BETA=$(echo $PREVIOUS | awk -F'.' '{ print $3 }')
 PREVIOUS_PATCH=$(echo $PREVIOUS_PATCH_BETA | awk -F'b' '{ print $1 }')
 PREVIOUS_BETA=$(echo $PREVIOUS_PATCH_BETA | awk -F'b' '{ print $2 }')
 
-if [ "$MAJOR" -gt "$PREVIOUS_MAJOR" ]; then
+if [ $MAJOR -gt $PREVIOUS_MAJOR ]; then
     finish 0
 elif [ $MAJOR -lt $PREVIOUS_MAJOR ]; then
     finish 1
@@ -66,11 +66,11 @@ elif [ $MINOR -lt $PREVIOUS_MINOR ]; then
     finish 1
 elif [ $PATCH -gt $PREVIOUS_PATCH ]; then
     finish 0
-elif [ "$PATCH" -lt $PREVIOUS_PATCH ]; then
+elif [ $PATCH -lt $PREVIOUS_PATCH ]; then
     finish 1
-elif [ $BETA -a $PREVIOUS_BETA -a $BETA -gt $ $PREVIOUS_BETA ]; then
+elif [ "$BETA" != "" -a "$PREVIOUS_BETA" != "" -a $BETA -gt $PREVIOUS_BETA ]; then
     finish 0
-elif [ ! $BETA -a $PREVIOUS_BETA ]; then
+elif [ "$BETA" = "" -a "$PREVIOUS_BETA" != "" ]; then
     finish 0
 fi
 

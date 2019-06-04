@@ -126,6 +126,7 @@ expected_type = {
     'opacity': spatial.options.OptionsOpacity,
     'color': spatial.options.OptionsColor,
     'radius': spatial.options.OptionsSize,
+    'size': spatial.options.OptionsSize,
     'wireframe': spatial.options.OptionsWireframe,
     'textures': list,
 }
@@ -133,7 +134,7 @@ expected_type = {
 
 @pytest.mark.parametrize(
     ('options_class', 'expected_props'), [
-        (spatial.OptionsPoints, ['opacity', 'color']),
+        (spatial.OptionsPoints, ['opacity', 'color', 'size']),
         (spatial.OptionsLines, ['opacity', 'color']),
         (spatial.OptionsTubes, ['opacity', 'color', 'radius']),
         (
@@ -179,3 +180,44 @@ def test_bad_volumeslices_options(prop, value):
     with pytest.raises(properties.ValidationError):
         setattr(opt, prop, value)
         opt.validate()
+
+
+@pytest.mark.parametrize(
+    ('value', 'shape'), [
+        (0, 'square'),
+        (100, 'sphere'),
+    ]
+)
+def test_good_point_options(value, shape):
+    opt = spatial.options.OptionsPoints(
+        size=spatial.options.OptionsSize(value=value),
+        shape=shape,
+        opacity={'value': 1},
+        color={'value': 'red'}
+    )
+    assert opt.validate()
+
+
+@pytest.mark.parametrize(
+    ('value', 'shape'),
+    [
+        (-1, 'sphere'),  # bad size value
+        (1, 'NotAnOption'),  # bad shape value
+    ]
+)
+def test_bad_point_options(value, shape):
+    with pytest.raises(properties.ValidationError):
+        opt = spatial.options.OptionsPoints(
+            size=spatial.options.OptionsSize(value=value),
+            shape=shape,
+            opacity={'value': 1},
+            color={'value': 'red'}
+        )
+        opt.validate()
+
+
+def test_default_point_options():
+    opt = spatial.options.OptionsPoints()
+
+    assert opt.shape == 'square'
+    assert opt.size.value == 10
