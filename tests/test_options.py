@@ -184,8 +184,8 @@ def test_bad_volumeslices_options(prop, value):
 
 @pytest.mark.parametrize(
     ('value', 'shape'), [
-        (0, 'Square'),
-        (100, 'Sphere'),
+        (0, 'square'),
+        (100, 'sphere'),
     ]
 )
 def test_good_point_options(value, shape):
@@ -201,7 +201,7 @@ def test_good_point_options(value, shape):
 @pytest.mark.parametrize(
     ('value', 'shape'),
     [
-        (-1, 'Sphere'),  # bad size value
+        (-1, 'sphere'),  # bad size value
         (1, 'NotAnOption'),  # bad shape value
     ]
 )
@@ -219,5 +219,5 @@ def test_bad_point_options(value, shape):
 def test_default_point_options():
     opt = spatial.options.OptionsPoints()
 
-    assert opt.shape == 'Square'
+    assert opt.shape == 'square'
     assert opt.size.value == 10

@@ -200,9 +200,8 @@ class OptionsPoints(_BaseElementOptions):
     )
     shape = properties.StringChoice(
         'Points are displayed as squares or spheres',
-        default='Square',
-        choices=['Square', 'Sphere'],
-        required=False,
+        default='square',
+        choices=['square', 'sphere'],
     )
 
 
