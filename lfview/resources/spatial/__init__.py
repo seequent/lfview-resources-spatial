@@ -28,6 +28,6 @@ from .textures import (
     TextureProjection,
 )
 
-__version__ = '0.0.2'
+__version__ = '0.0.3b0'
 
 SPATIAL_REGISTRY = base._BaseResource._REGISTRY
