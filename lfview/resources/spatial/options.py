@@ -37,38 +37,24 @@ class _BaseOptionsItem(_BaseOptions):
         return output
 
 
-class OptionsTexture(_BaseOptionsItem):
-    """Options for a displayed texture"""
-
+class OptionsStaticOpacity(_BaseOptionsItem):
+    """Option for a static opacity value"""
     value = properties.Float(
-        'Opacity value of the texture image',
+        'Single opacity value',
         min=0.0,
         max=1.0,
         default=1.0,
     )
 
-    data = Pointer(
-        'Texture data for visualization',
-        TextureProjection,
-    )
 
-
-class OptionsOpacity(_BaseOptionsItem):
-    """Options for displayed opacity
-
-    Opaque is 1.0; transparent is 0.0. You may specify a single
-    value for the entire Element or variable values using data and
-    a mapping that evaluates to numbers in range 0-1.
-
-    Note: Visualization clients may not support variable opacity.
-    """
+class _BaseOptionsData(_BaseOptionsItem):
+    """Represents static or mapped data"""
 
     value = properties.Float(
-        'Single opacity value, used if data is unspecified',
-        min=0.0,
-        max=1.0,
+        'Static value, used if data is unspecified',
         required=False,
     )
+
     data = properties.Union(
         'Data for attribute visualization',
         props=[
@@ -113,7 +99,31 @@ class OptionsOpacity(_BaseOptionsItem):
             )
 
 
-class OptionsSize(OptionsOpacity):
+class OptionsTexture(OptionsStaticOpacity):
+    """Options for a displayed texture"""
+    data = Pointer(
+        'Texture data for visualization',
+        TextureProjection,
+    )
+
+    visible = properties.Boolean(
+        'Visibility of texture on/off',
+        default=True,
+    )
+
+
+class OptionsOpacity(OptionsStaticOpacity, _BaseOptionsData):
+    """Options for displayed opacity
+
+    Opaque is 1.0; transparent is 0.0. You may specify a single
+    value for the entire Element or variable values using data and
+    a mapping that evaluates to numbers in range 0-1.
+
+    Note: Visualization clients may not support variable opacity.
+    """
+
+
+class OptionsSize(_BaseOptionsData):
     """Options for displayed size
 
     You may specify a single size value for the entire Element or
@@ -131,7 +141,7 @@ class OptionsSize(OptionsOpacity):
     )
 
 
-class OptionsColor(OptionsOpacity):
+class OptionsColor(_BaseOptionsData):
     """Options for displayed color
 
     You may specify a single solid color value for the entire Element or

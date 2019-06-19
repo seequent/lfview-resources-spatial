@@ -9,7 +9,8 @@ def test_no_class_in_serialize():
     assert boi.serialize(include_class=True) == {}
 
 
-@pytest.mark.parametrize('value', [0., 0.5, 1.])
+@pytest.mark.parametrize('opacity', [0., 0.5, 1.])
+@pytest.mark.parametrize('visible', [True, False])
 @pytest.mark.parametrize(
     'data', [
         'https://example.com/api/textures/projection/abc123',
@@ -21,9 +22,10 @@ def test_no_class_in_serialize():
         }
     ]
 )
-def test_good_optionstexture(value, data):
+def test_good_optionstexture(opacity, visible, data):
     ot = spatial.options.OptionsTexture(
-        value=value,
+        value=opacity,
+        visible=visible,
         data=data,
     )
     assert ot.validate()
@@ -31,7 +33,8 @@ def test_good_optionstexture(value, data):
 
 @pytest.mark.parametrize(
     ('prop', 'bad_val'), [
-        ('value', -1.0), ('value', 5), ('data', properties.undefined),
+        ('value', -1.0), ('value', 5), ('visible', 1), ('visible', 'False'),
+        ('data', properties.undefined),
         ('data', 'https://example.com/api/data/basic/abc123')
     ]
 )
