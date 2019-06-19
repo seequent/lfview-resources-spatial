@@ -38,6 +38,7 @@ class _BaseOptionsItem(_BaseOptions):
 
 
 class OptionsStaticOpacity(_BaseOptionsItem):
+    """Option for a static opacity value"""
     value = properties.Float(
         'Single opacity value',
         min=0.0,
@@ -98,15 +99,8 @@ class _BaseOptionsData(_BaseOptionsItem):
             )
 
 
-class OptionsTexture(_BaseOptionsItem):
+class OptionsTexture(OptionsStaticOpacity):
     """Options for a displayed texture"""
-
-    opacity = properties.Instance(
-        'Default color options on the element',
-        OptionsStaticOpacity,
-        default=OptionsStaticOpacity,
-    )
-
     data = Pointer(
         'Texture data for visualization',
         TextureProjection,

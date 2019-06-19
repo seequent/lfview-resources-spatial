@@ -24,7 +24,7 @@ def test_no_class_in_serialize():
 )
 def test_good_optionstexture(opacity, visible, data):
     ot = spatial.options.OptionsTexture(
-        opacity={'value': opacity},
+        value=opacity,
         visible=visible,
         data=data,
     )
@@ -33,11 +33,7 @@ def test_good_optionstexture(opacity, visible, data):
 
 @pytest.mark.parametrize(
     ('prop', 'bad_val'), [
-        ('opacity', {
-            'value': -1.0
-        }), ('opacity', {
-            'value': 5
-        }), ('visible', 1), ('visible', 'False'),
+        ('value', -1.0), ('value', 5), ('visible', 1), ('visible', 'False'),
         ('data', properties.undefined),
         ('data', 'https://example.com/api/data/basic/abc123')
     ]
