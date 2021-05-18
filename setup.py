@@ -22,10 +22,11 @@ with open('README.rst') as f:
 setuptools.setup(
     name='lfview-resources-spatial',
     version='0.0.4',
-    packages=setuptools.find_packages(exclude=('tests',)),
+    packages=setuptools.find_packages(exclude=('tests', )),
     install_requires=[
         'properties[full]>=0.5.6',
         'lfview-resources-files',
+        'omf==1.0.1',
     ],
     author='Seequent',
     author_email='franklin.koch@seequent.com',

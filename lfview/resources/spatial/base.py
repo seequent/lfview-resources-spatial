@@ -134,3 +134,10 @@ class _BaseResource(files.base._BaseUIDModel):
         required=False,
         max_length=5000,
     )
+
+    def to_omf(self):
+        raise NotImplementedError(
+            'to_omf not implemented for class: {}'.format(
+                self.__class__.__name__
+            )
+        )
