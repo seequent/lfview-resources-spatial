@@ -135,8 +135,8 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (
-        master_doc, 'spatial.tex', u'LFView Resources - Spatial - Documentation',
-        u'Seequent', 'manual'
+        master_doc, 'spatial.tex',
+        u'LFView Resources - Spatial - Documentation', u'Seequent', 'manual'
     ),
 ]
 
@@ -158,9 +158,9 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (
-        master_doc, 'spatial', u'LFView Resources - Spatial - Documentation', author,
-        'spatial', 'Definitions and documentation for spatial resources',
-        'Miscellaneous'
+        master_doc, 'spatial', u'LFView Resources - Spatial - Documentation',
+        author, 'spatial',
+        'Definitions and documentation for spatial resources', 'Miscellaneous'
     ),
 ]
 
