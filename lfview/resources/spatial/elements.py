@@ -2,6 +2,7 @@
 
 from lfview.resources.files import Array
 import numpy as np
+import omf
 import properties
 from properties.extras import Pointer
 from six import string_types
@@ -245,6 +246,18 @@ class ElementPointSet(_BaseElementPointSet):
             )
         return True
 
+    def to_omf(self):
+        self.validate()
+        omf_point_set = omf.PointSetElement(
+            name=self.name or '',
+            description=self.description or '',
+            geometry=omf.PointSetGeometry(vertices=self.vertices.array, ),
+            data=[attr.to_omf() for attr in self.data],
+            textures=[],
+            color=self.defaults.color.value,
+        )
+        return omf_point_set
+
 
 class ElementLineSet(_BaseElementLineSet):
     """Line-set element with geometry defined by vertices and segments"""
@@ -337,6 +350,20 @@ class ElementLineSet(_BaseElementLineSet):
                 instance=self,
             )
         return True
+
+    def to_omf(self):
+        self.validate()
+        omf_line_set = omf.LineSetElement(
+            name=self.name or '',
+            description=self.description or '',
+            geometry=omf.LineSetGeometry(
+                vertices=self.vertices.array,
+                segments=self.segments.array,
+            ),
+            data=[attr.to_omf() for attr in self.data],
+            color=self.defaults.color.value,
+        )
+        return omf_line_set
 
 
 class ElementSurface(_BaseElementSurface):

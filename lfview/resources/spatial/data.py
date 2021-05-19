@@ -1,5 +1,6 @@
 """Data objects that hold numeric attributes and mapping to elements"""
 from lfview.resources.files import Array
+import omf
 import properties
 from properties.extras import Pointer
 from six import string_types
@@ -65,6 +66,20 @@ class DataBasic(_BaseData):
                 instance=self,
             )
 
+    def to_omf(self):
+        self.validate()
+        if self.location == 'nodes':
+            location = 'vertices'
+        else:
+            location = 'segments'
+        omf_data = omf.ScalarData(
+            name=self.name or '',
+            description=self.description or '',
+            location=location,
+            array=self.array.array,
+        )
+        return omf_data
+
 
 class DataCategory(DataBasic):
     """Category attribute data
@@ -106,3 +121,21 @@ class DataCategory(DataBasic):
                 prop='array',
                 instance=self,
             )
+
+    def to_omf(self):
+        self.validate()
+        if self.location == 'nodes':
+            location = 'vertices'
+        else:
+            location = 'segments'
+        omf_data = omf.MappedData(
+            name=self.name or '',
+            description=self.description or '',
+            location=location,
+            array=self.array.array,
+            legends=[
+                mapping.to_omf()
+                for mapping in [self.categories] + self.mappings
+            ],
+        )
+        return omf_data

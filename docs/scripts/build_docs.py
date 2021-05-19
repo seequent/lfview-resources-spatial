@@ -73,11 +73,13 @@ with open('docs/index.rst', 'w') as index:
         graph_filename = None
         graph_registry = None
     template = env.get_template('index.tpl')
-    index.write(template.render(
-        modules=modules,
-        other_files=other_files,
-        graph=graph_filename,
-    ))
+    index.write(
+        template.render(
+            modules=modules,
+            other_files=other_files,
+            graph=graph_filename,
+        )
+    )
 
 # Write module files
 for module in modules:

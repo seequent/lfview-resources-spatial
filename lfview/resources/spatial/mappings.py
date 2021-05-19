@@ -1,6 +1,7 @@
 """Objects that map a data array to attributes for visualization"""
 from lfview.resources.files import Array
 import numpy as np
+import omf
 import properties
 from properties.extras import Pointer
 from six import string_types
@@ -311,3 +312,17 @@ class MappingCategory(_BaseDataMapping):
                 prop='indices',
                 instance=self,
             )
+
+    def to_omf(self):
+        self.validate()
+        if not np.array_equal(self.indices, range(len(self.indices))):
+            raise NotImplementedError(
+                'OMF conversion only implemented for '
+                'indices [0, 1, 2, ..., len(indices) - 1]'
+            )
+        omf_legend = omf.Legend(
+            name=self.name or '',
+            description=self.description or '',
+            values=self.values,
+        )
+        return omf_legend
