@@ -252,8 +252,8 @@ class ElementPointSet(_BaseElementPointSet):
             name=self.name or '',
             description=self.description or '',
             geometry=omf.PointSetGeometry(vertices=self.vertices.array, ),
-            data=[attr.to_omf() for attr in self.data],
-            textures=[],
+            data=[attr.to_omf(cell_location='vertices') for attr in self.data if not isinstance(attr, TextureProjection)],
+            textures=[tex.to_omf() for tex in self.data if isinstance(tex, TextureProjection)],
             color=self.defaults.color.value,
         )
         return omf_point_set
@@ -360,7 +360,7 @@ class ElementLineSet(_BaseElementLineSet):
                 vertices=self.vertices.array,
                 segments=self.segments.array,
             ),
-            data=[attr.to_omf() for attr in self.data],
+            data=[attr.to_omf(cell_location='segments') for attr in self.data],
             color=self.defaults.color.value,
         )
         return omf_line_set
@@ -467,7 +467,7 @@ class ElementSurface(_BaseElementSurface):
                 vertices=self.vertices.array,
                 triangles=self.triangles.array,
             ),
-            data=[attr.to_omf() for attr in self.data if not isinstance(tex, TextureProjection)],
+            data=[attr.to_omf(cell_location='faces') for attr in self.data if not isinstance(attr, TextureProjection)],
             textures=[tex.to_omf() for tex in self.data if isinstance(tex, TextureProjection)],
             color=self.defaults.color.value,
         )
@@ -571,7 +571,7 @@ class ElementSurfaceGrid(_BaseElementSurface):
                 axis_u=self.axis_u,
                 axis_v=self.axis_v,
             ),
-            data=[attr.to_omf() for attr in self.data if not isinstance(tex, TextureProjection)],
+            data=[attr.to_omf(cell_location='faces') for attr in self.data if not isinstance(attr, TextureProjection)],
             textures=[tex.to_omf() for tex in self.data if isinstance(tex, TextureProjection)],
             color=self.defaults.color.value,
         )
@@ -660,7 +660,7 @@ class ElementVolumeGrid(_BaseElementVolume):
                 axis_v=self.axis_v,
                 axis_w=self.axis_w,
             ),
-            data=[attr.to_omf() for attr in self.data],
+            data=[attr.to_omf(cell_location='cells') for attr in self.data],
             color=self.defaults.color.value,
         )
         return omf_grid_volume

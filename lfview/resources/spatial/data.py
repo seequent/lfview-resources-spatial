@@ -122,12 +122,12 @@ class DataCategory(DataBasic):
                 instance=self,
             )
 
-    def to_omf(self):
+    def to_omf(self, cell_location):
         self.validate()
         if self.location == 'nodes':
             location = 'vertices'
         else:
-            location = 'segments'
+            location = cell_location
         omf_data = omf.MappedData(
             name=self.name or '',
             description=self.description or '',
