@@ -458,6 +458,21 @@ class ElementSurface(_BaseElementSurface):
             )
         return True
 
+    def to_omf(self):
+        self.validate()
+        omf_surface = omf.SurfaceElement(
+            name=self.name or '',
+            description=self.description or '',
+            geometry=omf.SurfaceGeometry(
+                vertices=self.vertices.array,
+                triangles=self.triangles.array,
+            ),
+            data=[attr.to_omf() for attr in self.data if not isinstance(tex, TextureProjection)],
+            textures=[tex.to_omf() for tex in self.data if isinstance(tex, TextureProjection)],
+            color=self.defaults.color.value,
+        )
+        return omf_surface
+
 
 class ElementSurfaceGrid(_BaseElementSurface):
     """Surface element with geometry defined by a grid
@@ -544,6 +559,26 @@ class ElementSurfaceGrid(_BaseElementSurface):
             )
         return True
 
+    def to_omf(self):
+        self.validate()
+        omf_grid_surface = omf.SurfaceElement(
+            name=self.name or '',
+            description=self.description or '',
+            geometry=omf.SurfaceGridGeometry(
+                origin=self.origin,
+                tensor_u=self.tensor_u,
+                tensor_v=self.tensor_v,
+                axis_u=self.axis_u,
+                axis_v=self.axis_v,
+            ),
+            data=[attr.to_omf() for attr in self.data if not isinstance(tex, TextureProjection)],
+            textures=[tex.to_omf() for tex in self.data if isinstance(tex, TextureProjection)],
+            color=self.defaults.color.value,
+        )
+        if self.offset_w is not None:
+            omf_grid_surface.offset_w = self.offset_w.array
+        return omf_grid_surface
+
 
 class ElementVolumeGrid(_BaseElementVolume):
     """Volume element with geometry defined by a grid
@@ -610,3 +645,22 @@ class ElementVolumeGrid(_BaseElementVolume):
             return cells
         except (AttributeError, IndexError, TypeError):
             return None
+
+    def to_omf(self):
+        self.validate()
+        omf_grid_volume = omf.VolumeElement(
+            name=self.name or '',
+            description=self.description or '',
+            geometry=omf.VolumeGridGeometry(
+                origin=self.origin,
+                tensor_u=self.tensor_u,
+                tensor_v=self.tensor_v,
+                tensor_w=self.tensor_w,
+                axis_u=self.axis_u,
+                axis_v=self.axis_v,
+                axis_w=self.axis_w,
+            ),
+            data=[attr.to_omf() for attr in self.data],
+            color=self.defaults.color.value,
+        )
+        return omf_grid_volume
