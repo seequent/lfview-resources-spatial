@@ -1,5 +1,6 @@
 """Data objects that hold numeric attributes and mapping to elements"""
 from lfview.resources.files import Array
+import numpy as np
 import omf
 import properties
 from properties.extras import Pointer
@@ -66,12 +67,12 @@ class DataBasic(_BaseData):
                 instance=self,
             )
 
-    def to_omf(self):
+    def to_omf(self, cell_location):
         self.validate()
         if self.location == 'nodes':
             location = 'vertices'
         else:
-            location = 'segments'
+            location = cell_location
         omf_data = omf.ScalarData(
             name=self.name or '',
             description=self.description or '',
@@ -122,19 +123,35 @@ class DataCategory(DataBasic):
                 instance=self,
             )
 
-    def to_omf(self):
+    def to_omf(self, cell_location):
         self.validate()
         if self.location == 'nodes':
             location = 'vertices'
         else:
-            location = 'segments'
+            location = cell_location
+        all_mapping_indices = set(
+            sum(
+                [
+                    mapping.indices
+                    for mapping in [self.categories] + self.mappings
+                ], []
+            )
+        )
+        all_array_indices = sorted(set(self.array.array))
+        index_map = {}
+        for i, array_index in enumerate(all_array_indices):
+            if array_index in all_mapping_indices:
+                index_map[array_index] = i
+            else:
+                index_map[array_index] = -1
+        output_array = np.array([index_map[val] for val in self.array.array])
         omf_data = omf.MappedData(
             name=self.name or '',
             description=self.description or '',
             location=location,
-            array=self.array.array,
+            array=output_array,
             legends=[
-                mapping.to_omf()
+                mapping.to_omf(index_map)
                 for mapping in [self.categories] + self.mappings
             ],
         )

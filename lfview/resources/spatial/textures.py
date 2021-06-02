@@ -1,5 +1,6 @@
 """Texture data objects that place images on elements"""
 from lfview.resources.files import Image
+import omf
 import properties
 from properties.extras import Pointer
 
@@ -36,3 +37,15 @@ class TextureProjection(_BaseTexture):
         'Texture image file',
         Image,
     )
+
+    def to_omf(self):
+        self.validate()
+        omf_texture = omf.ImageTexture(
+            name=self.name or '',
+            description=self.description or '',
+            origin=self.origin,
+            axis_u=self.axis_u,
+            axis_v=self.axis_v,
+            image=self.image.image,
+        )
+        return omf_texture
