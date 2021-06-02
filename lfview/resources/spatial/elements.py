@@ -252,8 +252,16 @@ class ElementPointSet(_BaseElementPointSet):
             name=self.name or '',
             description=self.description or '',
             geometry=omf.PointSetGeometry(vertices=self.vertices.array, ),
-            data=[attr.to_omf(cell_location='vertices') for attr in self.data if not isinstance(attr, TextureProjection)],
-            textures=[tex.to_omf() for tex in self.data if isinstance(tex, TextureProjection)],
+            data=[
+                attr.to_omf(cell_location='vertices')
+                for attr in self.data
+                if not isinstance(attr, TextureProjection)
+            ],
+            textures=[
+                tex.to_omf()
+                for tex in self.data
+                if isinstance(tex, TextureProjection)
+            ],
             color=self.defaults.color.value,
         )
         return omf_point_set
@@ -467,8 +475,16 @@ class ElementSurface(_BaseElementSurface):
                 vertices=self.vertices.array,
                 triangles=self.triangles.array,
             ),
-            data=[attr.to_omf(cell_location='faces') for attr in self.data if not isinstance(attr, TextureProjection)],
-            textures=[tex.to_omf() for tex in self.data if isinstance(tex, TextureProjection)],
+            data=[
+                attr.to_omf(cell_location='faces')
+                for attr in self.data
+                if not isinstance(attr, TextureProjection)
+            ],
+            textures=[
+                tex.to_omf()
+                for tex in self.data
+                if isinstance(tex, TextureProjection)
+            ],
             color=self.defaults.color.value,
         )
         return omf_surface
@@ -571,8 +587,16 @@ class ElementSurfaceGrid(_BaseElementSurface):
                 axis_u=self.axis_u,
                 axis_v=self.axis_v,
             ),
-            data=[attr.to_omf(cell_location='faces') for attr in self.data if not isinstance(attr, TextureProjection)],
-            textures=[tex.to_omf() for tex in self.data if isinstance(tex, TextureProjection)],
+            data=[
+                attr.to_omf(cell_location='faces')
+                for attr in self.data
+                if not isinstance(attr, TextureProjection)
+            ],
+            textures=[
+                tex.to_omf()
+                for tex in self.data
+                if isinstance(tex, TextureProjection)
+            ],
             color=self.defaults.color.value,
         )
         if self.offset_w is not None:
