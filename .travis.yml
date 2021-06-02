@@ -21,9 +21,6 @@ script:
   - ./scripts/checkversion.sh
 
 after_success:
-  - pip install coverage
-  - sed -i "s+/usr/src/app+${PWD}+g" .coverage
-  - bash <(curl -s https://codecov.io/bash)
   - if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then
         make publish;
     fi
