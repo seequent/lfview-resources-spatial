@@ -129,7 +129,21 @@ class DataCategory(DataBasic):
             location = 'vertices'
         else:
             location = cell_location
-        index_map = {ind: i for i, ind in enumerate(sorted(set(self.array.array)))}
+        all_mapping_indices = set(
+            sum(
+                [
+                    mapping.indices
+                    for mapping in [self.categories] + self.mappings
+                ], []
+            )
+        )
+        all_array_indices = sorted(set(self.array.array))
+        index_map = {}
+        for i, array_index in enumerate(all_array_indices):
+            if array_index in all_mapping_indices:
+                index_map[array_index] = i
+            else:
+                index_map[array_index] = -1
         output_array = np.array([index_map[val] for val in self.array.array])
         omf_data = omf.MappedData(
             name=self.name or '',
