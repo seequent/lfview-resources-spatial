@@ -38,7 +38,7 @@ build27:
 	docker build -t $(ORG)/$(APP):latest27 -f Dockerfile.27 .
 
 docs: build
-	docker run -it --rm \
+	docker run --rm \
 		--name=$(APP) \
 		-v $(shell pwd)/docs:/usr/src/app/docs \
 		$(ORG)/$(APP):latest \
@@ -46,7 +46,7 @@ docs: build
 
 tests: build
 	mkdir -p cover
-	docker run -it --rm \
+	docker run --rm \
 		--name=$(APP)-tests \
 		-v $(shell pwd)/$(MODULE):/usr/src/app/$(MODULE) \
 		-v $(shell pwd)/tests:/usr/src/app/tests \
@@ -56,7 +56,7 @@ tests: build
 	mv -f cover/.coverage ./
 
 tests27: build27
-	docker run -it --rm \
+	docker run --rm \
 		--name=$(APP)-tests \
 		-v $(shell pwd)/$(MODULE):/usr/src/app/$(MODULE) \
 		-v $(shell pwd)/tests:/usr/src/app/tests \
@@ -64,7 +64,7 @@ tests27: build27
 		bash -c "pytest tests/"
 
 lint-yapf: build
-	docker run -it --rm \
+	docker run --rm \
 		--name=$(APP)-tests \
 		-v $(shell pwd)/.style.yapf:/usr/src/app/.style.yapf \
 		-v $(shell pwd)/$(MODULE):/usr/src/app/$(MODULE) \
@@ -73,7 +73,7 @@ lint-yapf: build
 		yapf -rd $(MODULE) tests
 
 lint-pylint: build
-	docker run -it --rm \
+	docker run --rm \
 		--name=$(APP)-tests \
 		-v $(shell pwd)/.pylintrc:/usr/src/app/.pylintrc \
 		-v $(shell pwd)/$(MODULE):/usr/src/app/$(MODULE) \
@@ -83,7 +83,7 @@ lint-pylint: build
 
 publish: build
 	mkdir -p dist
-	docker run -it --rm \
+	docker run --rm \
 		--name=$(APP)-publish \
 		-v $(shell pwd)/$(MODULE):/usr/src/app/$(MODULE) \
 		-v $(shell pwd)/dist:/usr/src/app/dist \
