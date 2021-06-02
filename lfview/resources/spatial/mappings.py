@@ -313,16 +313,23 @@ class MappingCategory(_BaseDataMapping):
                 instance=self,
             )
 
-    def to_omf(self):
+    def to_omf(self, index_map):
         self.validate()
-        if not np.array_equal(self.indices, range(len(self.indices))):
-            raise NotImplementedError(
-                'OMF conversion only implemented for '
-                'indices [0, 1, 2, ..., len(indices) - 1]'
-            )
+        new_values = []
+        if not self.values or isinstance(self.values[0], float):
+            nan_value = np.nan
+        elif isinstance(self.values[0], string_types):
+            nan_value = ''
+        else:
+            nan_value = [255, 255, 255]
+        for ind in index_map:
+            try:
+                new_values.append(self.values[self.indices.index(ind)])
+            except ValueError:
+                new_values.append(nan_value)
         omf_legend = omf.Legend(
             name=self.name or '',
             description=self.description or '',
-            values=self.values,
+            values=new_values,
         )
         return omf_legend
